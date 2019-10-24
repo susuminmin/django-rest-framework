@@ -15,18 +15,18 @@ schema_view = get_schema_view(
 
 app_name = 'musics'
 
+# url 은 resource 위치만 표현하도록
 urlpatterns = [
     path('musics/', views.music_list, name='music_list'),
-    path('musics/<int:music_pk>/', views.music_detail, name='music_detail'),
-    path('musics/<int:music_pk>/updel/', views.music_update_and_delete,
-         name='music_update_and_delete'),
+    path('musics/<int:music_pk>/', views.music_detail_update_delete,
+         name='music_detail_update_delete'),
+
     path('musics/<int:music_pk>/comments/',
          views.comments_create, name='comments_create'),
 
     path('artists/', views.artist_list, name='artist_list'),
-    path('artists/<int:artist_pk>/', views.artist_detail, name='artist_detail'),
-    path('artists/<int:artist_pk>/updel/',
-         views.artist_update_and_delete, name='artist_update_and_delete'),
+    path('artists/<int:artist_pk>/', views.artist_detail_update_delete, name='artist_detail_update_delete'),
+
 
     path('comments/', views.comment_list, name='comment_list'),
     path('comments/<int:comment_pk>/', views.comments_update_and_delete,

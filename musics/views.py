@@ -15,23 +15,20 @@ def music_list(request):
     return Response(serializer.data)  # json형태로 응답을 보낼 것
 
 
-@api_view(['GET'])
-def music_detail(request, music_pk):
-    music = get_object_or_404(Music, pk=music_pk)
-    serializer = MusicSerializer(music)  # 하나의 데이터라서 many=True 안 넣음
-    return Response(serializer.data)
-
-
-@api_view(['PUT', 'DELETE'])
-def music_update_and_delete(request, music_pk):
-    comment = get_object_or_404(Music, pk=music_pk)
-    if request.method == 'PUT':
+# api/vi1/musics/3/
+@api_view(['GET', 'PUT', 'DELETE'])
+def music_detail_update_delete(request, music_pk):
+    music = get_object_or_404(Music, pk=music_pk)  # 음악 있는지 없는지 확인
+    if request.method == 'GET':
+        serializer = MusicSerializer(music)  # 하나의 데이터라서 many=True 안 넣음
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        # 수정할 때 사용자가 넘긴 데이터 / 수정이므로 기존 instance 넣어줌
         serializer = MusicSerializer(data=request.data, instance=music)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-    # if request.method == 'DELETE':
-    else:
+        if serializer.is_valid(raise_exception=True):  # valid 하지 않을 땐 exception
+            serializer.save()  # 수정하고
+            return Response(serializer.data)  # 수정한 결과값 보여주기
+    else:  # DELETE
         music.delete()
         return Response({'message': 'Music has been deleted!'})
 
@@ -43,22 +40,17 @@ def artist_list(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
-def artist_detail(request, artist_pk):
+@api_view(['GET', 'PUT', 'DELETE'])
+def artist_detail_update_delete(request, artist_pk):
     artist = get_object_or_404(Artist, pk=artist_pk)
-    serializer = ArtistDetailSerializer(artist)  # 하나의 데이터라서 many=True 안 넣음
-    return Response(serializer.data)
-
-
-@api_view(['PUT', 'DELETE'])
-def artist_update_and_delete(request, artist_pk):
-    artist = get_object_or_404(Artist, pk=artist_pk)
+    if request.method == 'GET':
+        serializer = ArtistDetailSerializer(artist)  # 하나의 데이터라서 many=True 안 넣음
+        return Response(serializer.data)
     if request.method == 'PUT':
         serializer = ArtistSerializer(data=request.data, instance=artist)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
-    # if request.method == 'DELETE':
     else:
         artist.delete()
         return Response({'message': 'Artist has been deleted!'})
