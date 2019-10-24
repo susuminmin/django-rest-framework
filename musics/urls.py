@@ -1,7 +1,7 @@
 from django.urls import path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from . import views  # 뷰함수
+from . import views
 
 
 schema_view = get_schema_view(
@@ -20,14 +20,11 @@ urlpatterns = [
     path('musics/', views.music_list, name='music_list'),
     path('musics/<int:music_pk>/', views.music_detail_update_delete,
          name='music_detail_update_delete'),
-
     path('musics/<int:music_pk>/comments/',
          views.comments_create, name='comments_create'),
-
     path('artists/', views.artist_list, name='artist_list'),
-    path('artists/<int:artist_pk>/', views.artist_detail_update_delete, name='artist_detail_update_delete'),
-
-
+    path('artists/<int:artist_pk>/', views.artist_detail_update_delete,
+         name='artist_detail_update_delete'),
     path('comments/', views.comment_list, name='comment_list'),
     path('comments/<int:comment_pk>/', views.comments_update_and_delete,
          name='comments_update_and_delete'),

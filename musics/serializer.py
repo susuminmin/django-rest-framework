@@ -6,7 +6,7 @@ class MusicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Music
-        fields = ('id', 'title', 'artist_id',) # 여기 있는 애들을 json타입으로 변환시켜 응답
+        fields = ('id', 'title', 'artist_id',)  # 여기 있는 애들을 json타입으로 변환시켜 응답
 
 
 class ArtistSerializer(serializers.ModelSerializer):
@@ -18,11 +18,11 @@ class ArtistSerializer(serializers.ModelSerializer):
 
 class ArtistDetailSerializer(ArtistSerializer):
 
-    musics = MusicSerializer(many=True) # 이미 ArtistSerializer 참조 전제 
+    musics = MusicSerializer(many=True)  # 이미 ArtistSerializer 참조 전제
+    musics_count = serializers.IntegerField(source='musics.count')
 
     class Meta(ArtistSerializer.Meta):
         fields = ArtistSerializer.Meta.fields + ('musics',)
-
 
 
 class CommentSerializer(serializers.ModelSerializer):

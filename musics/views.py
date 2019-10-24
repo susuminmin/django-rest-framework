@@ -7,8 +7,18 @@ from .serializer import MusicSerializer, ArtistSerializer, CommentSerializer, Ar
 
 @api_view(['GET'])
 def music_list(request):
+
+    params = {}
+    artist_pk = request.GET.get('artist_pk')  # url ? 는 request.GET으로 꺼내 씀
+
+    if artist_pk is not None:
+        params['artist_id'] = artist_pk
+
+    # 만약 artist_pk 가 Query Params 로 넘어온다면, artist_pk 로 필터링한 값만 응답.
+    # 그렇지 않다면 전체 음악 응답.
+
     # 모든 음악에 대한 정보 받아서 json파일 형식으로 변환시켜서 응답해야 한다
-    musics = Music.objects.all()  # 내가 보여주고 싶은 데이터를 DB에서 꺼낸다
+    musics = Music.objects.filter(**params)  # 내가 보여주고 싶은 데이터를 DB에서 꺼낸다
     # serializing작업을 해준다 (ModelForm 작성과 비슷)
     serializer = MusicSerializer(musics, many=True)
     # (내가 받고 싶은 data, many=T/F  (default = F))
